@@ -13,8 +13,8 @@ namespace E_Commerce.Api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository productRepository;
-        public ProductController(IProductRepository productRepository)
+        private readonly IGenericRepository<Product> productRepository;
+        public ProductController(IGenericRepository<Product> productRepository)
         {
             this.productRepository = productRepository;
         }
@@ -22,14 +22,14 @@ namespace E_Commerce.Api.Controllers
         [HttpGet("GetProducts")]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var data = await productRepository.GetProducts();
+            var data = await productRepository.ListAllAsync();
             return Ok(data);
         }
 
         [HttpGet("GetProductById")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            return await productRepository.GetProductById(id);
+            return await productRepository.GetByIdAsync(id);
         }
 
     }
