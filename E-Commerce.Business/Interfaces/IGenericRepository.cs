@@ -14,5 +14,7 @@ namespace E_Commerce.Business.Interfaces
         Task<IReadOnlyList<T>> ListAllAsync();
         Task<T> GetEntityWithSpec(ISpesification<T> spesification);
         Task<IReadOnlyList<T>> ListAsync(ISpesification<T> spesification);
+
+        Task<int> CountAsync(ISpesification<T> spesification);
     }
 }

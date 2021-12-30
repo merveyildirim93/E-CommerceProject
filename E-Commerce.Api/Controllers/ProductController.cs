@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using E_Commerce.Api.Dtos.ProductDto;
+using E_Commerce.Api.Helper;
 using E_Commerce.Business.Interfaces;
 using E_Commerce.Business.Spesifications;
+using E_Commerce.Business.Spesifications.ProductDto;
 using E_Commerce.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +26,14 @@ namespace E_Commerce.Api.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<IReadOnlyList<ProductListDto>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductListDto>>> GetProducts([FromQuery] ProductSpecDto dto)
         {
-            var spec = new ProductSpecification();
-            var data = await productRepository.ListAsync(spec);
-            return Ok(mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductListDto>>(data));
+            var spec = new ProductSpecification(dto);
+            var countSpec = new ProductWithFiltersForCountSpec(dto);
+            var totalItems = await productRepository.CountAsync(spec);
+            var products = await productRepository.ListAsync(spec);
+            var data = mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductListDto>>(products);
+            return Ok(new Pagination<ProductListDto>(dto.PageIndex, dto.PageSize, totalItems, data));
         }
 
         [HttpGet("GetProductById")]

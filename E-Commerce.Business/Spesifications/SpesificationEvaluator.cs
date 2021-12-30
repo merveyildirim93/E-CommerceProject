@@ -18,6 +18,18 @@ namespace E_Commerce.Data.SpesificationData
             {
                 query = query.Where(spesification.Criteria);
             }
+            if(spesification.OrderBy != null)
+            {
+                query = query.OrderBy(spesification.OrderBy);
+            }
+            if (spesification.OrderByDescending != null)
+            {
+                query = query.OrderBy(spesification.OrderByDescending);
+            }
+            if(spesification.IsPagingEnabled == true)
+            {
+                query = query.Skip(spesification.Skip).Take(spesification.Take);
+            }
             query = spesification.Includes.Aggregate(query, (current, include) => current.Include(include));
             return query;
         }

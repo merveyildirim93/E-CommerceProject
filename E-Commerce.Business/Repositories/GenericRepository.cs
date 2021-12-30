@@ -19,6 +19,12 @@ namespace E_Commerce.Business.Repositories
         {
             this.context = context;
         }
+
+        public async Task<int> CountAsync(ISpesification<T> spesification)
+        {
+            return await ApplySpesification(spesification).CountAsync();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await context.Set<T>().FindAsync(id);
