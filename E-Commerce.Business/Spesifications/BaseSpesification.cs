@@ -6,6 +6,10 @@ namespace E_Commerce.Business.Spesifications
 {
     public class BaseSpesification<T> : ISpesification<T>
     {
+        public BaseSpesification()
+        {
+
+        }
         public BaseSpesification(Expression<Func<T,bool>> criteria)
         {
             Criteria = criteria;
